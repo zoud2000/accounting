@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>记账单</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+
+    <div class="max-w-lg mx-auto bg-white rounded-lg p-6 shadow">
+        <h1 class="text-2xl font-bold mb-4">添加支出</h1>
+        <form method="POST" action="/add" class="flex gap-2 mb-6">
+            <input type="text" name="category" placeholder="类型"
+                class="border rounded px-3 py-2 flex-1">
+            <input type="number" name="cost" step="0.01" placeholder="金额"
+                class="border rounded px-3 py-2 w-20">
+            <input type="date" name="date" value="{{ now }}"
+                class="border rounded px-3 py-2 flex-1">
+            <button type="submit"
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                添加
+            </button>
+        </form>
+        <form method="GET" action="/">
+            <input type="text" name="category" placeholder="筛选"> 
+            <button type="submit"
+             class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+        筛选
+             </button> 
+            <a href="/"
+            class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">
+        清除
+            </a>
+        </form>
+        
+        <h2 class="text-xl font-bold mb-3">支出列表</h2>
+        {% for expense in expenses %}
+        <div class="flex justify-between border-b py-2">
+            <span>{{ expense["category"] }}</span>
+            <span class="text-gray-500">{{ expense["cost"] }}元</span>
+            <span class="text-gray-500">{{ expense["date"] }}</span>
+           <form method="POST" action="/delete">
+                <input type="hidden" name="id" value="{{expense['id']}}">
+                <button type="submit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    删除
+                </button>
+                <div class="flex justify-between font-bold pt-3"></div> 
+            </form>
+        </div>
+        {% endfor %}
+
+        <span>总计</span>
+            <span class="text-blue-500">{{ total }} 元</span>
+    </div>
+
+</body>
+</html>
